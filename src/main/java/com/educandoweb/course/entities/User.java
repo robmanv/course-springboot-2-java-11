@@ -2,9 +2,19 @@ package com.educandoweb.course.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_user")
 public class User implements Serializable {  // O Serializable serve pra transformar o objeto em cadeia de bytes, importante pra trafego de dados
 	private static final long serialVersionUID = 1L;
 
+	@Id            // Informar a CHAVE
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //Auto incremental (funciona pra MySQL, H2)
 	private Long id;
 	private String name;
 	private String email;
