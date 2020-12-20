@@ -25,7 +25,7 @@ public class Order implements Serializable {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;  //A partir da versão 8 do Java surgiu a classe Instant melhor que o Date
-	private OrderStatus orderStatus;
+	private Integer orderStatus;
 	
 //	@JsonIgnore  // Colocamos essa anotação pra não ficar em looping infinito, trazendo a lista de Users por Order
 	@ManyToOne //Instruir ao JPA que essa é chave estrangeira
@@ -40,7 +40,7 @@ public class Order implements Serializable {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.orderStatus = orderStatus;
+		setOrderStatus(orderStatus);;
 		this.client = client;
 	}
 
@@ -61,11 +61,13 @@ public class Order implements Serializable {
 	}
 
 	public OrderStatus getOrderStatus() {
-		return orderStatus;
+		return OrderStatus.valueOf(orderStatus);
 	}
 
 	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
+		if (orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public User getClient() {
