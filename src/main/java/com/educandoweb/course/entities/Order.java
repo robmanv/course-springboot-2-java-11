@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "tb_order")
@@ -21,9 +22,12 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Auto incremental (funciona pra MySQL, H2)
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;  //A partir da versão 8 do Java surgiu a classe Instant melhor que o Date
 	private OrderStatus orderStatus;
 	
+//	@JsonIgnore  // Colocamos essa anotação pra não ficar em looping infinito, trazendo a lista de Users por Order
 	@ManyToOne //Instruir ao JPA que essa é chave estrangeira
 	@JoinColumn(name = "client_id") //nome da chave estrangeira no banco de dados
 	private User client;

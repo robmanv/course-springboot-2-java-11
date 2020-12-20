@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable {  // O Serializable serve pra transformar o objeto em cadeia de bytes, importante pra trafego de dados
@@ -24,6 +26,7 @@ public class User implements Serializable {  // O Serializable serve pra transfo
 	private String phone;
 	private String password;
 	
+ 	@JsonIgnore  // Colocamos essa anotação pra não ficar em looping infinito, trazendo a lista de Orders por cliente, mas o cliente por order continua na classe Order.java
 	@OneToMany(mappedBy = "client") // Para informar o nome do atributo mapeado como chave estrangeira na entity Order (relação 1 para muitos), assim traz todas as orders debaixo do client
 	private List<Order> orders = new ArrayList<>();
 	
