@@ -3,6 +3,15 @@ package com.educandoweb.course;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+//============================================//
+// BASICAMENTE TEMOS AS CAMADAS:
+//============================================//
+//  APPLICATION
+//  CONTROLLERS
+//  SERVICES      |-> ENTITIES
+//  REPOSITORIES  |
+//============================================//
 @SpringBootApplication
 public class CourseApplication {
 
