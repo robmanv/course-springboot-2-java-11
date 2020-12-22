@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -17,14 +20,18 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //Auto incremental (funciona pra MySQL, H2)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Auto incremental (funciona pra MySQL, H2)
 	private Long id;
 	private String name;
 	private String description;
 	private Double price;
 	private String imgUrl;
 
-	@Transient // Vai impedir que o JPA tente interpretar, quebra-galho até a próxima aula
+	// @Transient // Vai impedir que o JPA tente interpretar, quebra-galho até a
+	// próxima aula
+
+	@ManyToMany (fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>(); // Usei o Set ao invés do List pra garantir que não exista
 														// categoria repetida pro mesmo produto.
 														// Set é interface e o HashSet é a classe
@@ -111,7 +118,4 @@ public class Product implements Serializable {
 		return true;
 	}
 
-
-	
-	
 }

@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_category")
@@ -21,7 +24,11 @@ public class Category implements Serializable {
 	private Long id;
 	private String name;
 	
-	@Transient // Vai impedir que o JPA tente interpretar, quebra-galho até a próxima aula
+	//@Transient // Vai impedir que o JPA tente interpretar, quebra-galho até a próxima aula
+	//@JsonIgnore
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)  // informo aqui o nome da collection da outra entidade, já que foi lá onde defini a tabela intermediaria, poderia ter feito aqui tb
+	                                                               // inclui o fetchType EAGER pq vou obrigar a carregar essas tabelas intermediárias sempre
 	private Set<Product> products = new HashSet<>(); // Inicializando pra não ficar com nulo
 	
 	public Category() {
