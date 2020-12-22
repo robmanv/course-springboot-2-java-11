@@ -28,7 +28,7 @@ public class Category implements Serializable {
 	//@JsonIgnore
 	@JsonIgnore
 	@ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)  // informo aqui o nome da collection da outra entidade, já que foi lá onde defini a tabela intermediaria, poderia ter feito aqui tb
-	                                                               // inclui o fetchType EAGER pq vou obrigar a carregar essas tabelas intermediárias sempre
+	                                                               // inclui o fetchType EAGER pq vou obrigar a carregar essas tabelas intermediárias, normalmente elas não carregam 
 	private Set<Product> products = new HashSet<>(); // Inicializando pra não ficar com nulo
 	
 	public Category() {
