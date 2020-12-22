@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.educandoweb.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order_item")
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable {
 	
 	// O identificador é exatamente a classe de chave composta, sempre usar com EmbeddedId
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK(); // Sempre devo inicializar a classe pra esse tipo de relacionamento
 	
 	private Integer quantity;
 	private Double price;
@@ -33,6 +34,9 @@ public class OrderItem implements Serializable {
 		this.price = price;
 	}
 	
+	
+	//É AQUI NO GETORDER que fica no CICLO INFINITO pois é esse método que o Java Enterprise utiliza pra obter os Orders, evitando ASSOCIAÇÃO DE MÃO DUPLA
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
