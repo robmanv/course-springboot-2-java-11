@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
@@ -39,6 +41,10 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order", fetch = FetchType.EAGER) // IMPORTANTE: A lista abaixo OrderItem que possui o "id" e no "id" eu tenho o "order", presente no "OrderItemPK", 
 	                                  //             Aqui estou buscando os OrderItems conforme o id
 	private Set<OrderItem> items = new HashSet<>();
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)  // Cascade serve exclusivamente para PROPAGAR tudo o que ocorre com essa entidade na entidade filha
+	                                                          // Ao efetuar o SAVE aqui ocorrerá a atualização da entidade Payment
+	private Payment payment;
 	
 	public Order() {
 		
@@ -85,7 +91,27 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	
 
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public Double getTotal() {
+		Double total = 0.0;
+		
+		for (OrderItem x : items) {
+			total += x.getSubTotal();
+		}
+		
+		return total;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
