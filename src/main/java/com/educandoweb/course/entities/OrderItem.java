@@ -45,6 +45,7 @@ public class OrderItem implements Serializable {
 		id.setOrder(order);
 	}
 	
+	// Assim como no getOrder, pra não ficar em associação de mão dupla, ciclo infinito, peço ao Spring pra ignorar essa obtenção automática
 	public Product getProduct() {
 		return id.getProduct();
 	}

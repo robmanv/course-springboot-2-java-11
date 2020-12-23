@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -35,6 +38,10 @@ public class Product implements Serializable {
 	private Set<Category> categories = new HashSet<>(); // Usei o Set ao invés do List pra garantir que não exista
 														// categoria repetida pro mesmo produto.
 														// Set é interface e o HashSet é a classe
+
+	@OneToMany(mappedBy = "id.product", fetch = FetchType.EAGER) // IMPORTANTE: A lista abaixo OrderItem que possui o "id" e no "id" eu tenho o "order", presente no "OrderItemPK", 
+    //                                                                          Aqui estou buscando os OrderItems conforme o id
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Product() {
 
@@ -91,6 +98,29 @@ public class Product implements Serializable {
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+
+	// Vou varrer a lista OrderItem > OrderItemPK > Order, gerando outra lista de Orders (Acessar tabela intermediária pra obter as Orders)  
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<>();
+		
+		for (OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		
+		return set;
+	}
+	
+	// Somente um exemplo, de qualquer get que coloco, ele retorna no JSON do Postman
+	public Set<Category> getCategories2() {
+		Set<Category> set = new HashSet<>();
+		
+		for (Category x : categories) {
+			set.add(x);
+		}
+		
+		return set;
 	}
 
 	@Override
