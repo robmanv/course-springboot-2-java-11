@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 // Camada de SERVIÇO, usada pra acessar camada REPOSITORIES pra acesso a DADOS, aqui ficariam as regras de negócio, sempre é importante ter essa camada entre CONTROLLER e REPOSITORIES
 // Temos @Component registra a classe como componente do Spring permitindo ser injetado via Autowired, temos tambem o @Repository, @Service, 
@@ -23,7 +24,9 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id); // O Optional, desde o Java 8, serve pra retornar o objeto tipo User, no caso, no findById do Id, se fosse outro objeto, caçava por outro Database.
-		return obj.get(); // Retorna objeto User presente no optional
+	
+		// Troquei o obj.get pelo obj.orElseThrow pra fazer o get e lançar exceção caso não encontre. Uso como padrão a classe de erro personalizado
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); // Retorna objeto User presente no optional
 	}
 	
 	public User insert(User obj) { // Salvar objeto do tipo User
