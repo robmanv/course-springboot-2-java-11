@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // BASICAMENTE TEMOS AS CAMADAS:
 //============================================//
 //  APPLICATION
-//  CONTROLLERS
+//  CONTROLLERS ou RESOURCES
 //  SERVICES      |-> ENTITIES
 //  REPOSITORIES  |
 //============================================//
