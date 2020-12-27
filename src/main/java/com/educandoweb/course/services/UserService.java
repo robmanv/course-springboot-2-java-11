@@ -51,12 +51,15 @@ public class UserService {
 	public User update(Long id, User obj) {
 //		User entity = repository.getOne(id); //Deixar um objeto monitorado pelo JPA pra pode manipulá-lo posteriormente
 //		                                     // Melhor que o findbyid que acessa o Banco de Dados
-		
-		User entity = findById(id);
-		
-		updateData(entity, obj);
-		
-		return repository.save(entity);
+		try {
+			User entity = findById(id);
+			
+			updateData(entity, obj);
+			
+			return repository.save(entity);
+		} catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
