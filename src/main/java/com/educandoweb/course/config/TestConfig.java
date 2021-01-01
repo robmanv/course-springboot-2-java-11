@@ -25,7 +25,7 @@ import com.educandoweb.course.repositories.UserRepository;
 // Para avisar ao Spring que é uma classe de configuração
 @Configuration
 //Para avisar ao Spring que é exclusiva do perfil de testes
-@Profile("test")
+@Profile("dev")
 //Servirá pra popular o banco de dados com nossos objetos   | O CommandLineRunner serve pra executar um conjunto de instruções quando a aplicação for iniciada
 public class TestConfig implements CommandLineRunner {
 // Deve existir uma injeção de dependência, desacoplada (fraca) com minha repositories (framework tem mecanismo de injeção de dependencia implicito)
